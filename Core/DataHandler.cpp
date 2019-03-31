@@ -11,6 +11,7 @@ DataHandler* DataHandler::m_instance = 0;
 DataHandler::DataHandler() {
 	m_cmdType = RST;
 	busy = false;
+	m_display.draw();
 }
 
 DataHandler::~DataHandler() {
@@ -94,6 +95,8 @@ void DataHandler::setServerIp(string& data) {
 	if (tempData.size() > 3) {
 		m_serverIP = tempData.at(2);
 		m_serverPort = tempData.at(3);
+		m_display.setServerIP(m_serverIP);
+		m_display.draw();
 	}
 }
 
@@ -169,6 +172,8 @@ void DataHandler::setIPAddress(const char* data) {
 	char* pfound = strstr(data, "STAIP");
 	if (pfound != NULL) {
 		getValueFromRecivedData(pfound, m_ip);
+		m_display.setIP(m_ip);
+		m_display.draw();
 	}
 }
 

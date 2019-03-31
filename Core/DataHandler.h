@@ -9,6 +9,7 @@
 #define DATAHANDLER_H_
 
 #include "EspHandler.h"
+#include "Display.h"
 #include "utils.h"
 
 using namespace std;
@@ -42,6 +43,7 @@ private:
 	};
 	CMD m_cmdType;
 	EspHandler m_esp;
+	Display m_display;
 	bool busy;
 	string m_ip;
 	string m_serverIP = "";
