@@ -10,6 +10,7 @@
 
 #include "EspHandler.h"
 #include "Display.h"
+#include "CmdHandler.h"
 #include "utils.h"
 
 using namespace std;
@@ -44,6 +45,7 @@ private:
 	CMD m_cmdType;
 	EspHandler m_esp;
 	Display m_display;
+	CmdHandler m_cmdHandler;
 	bool busy;
 	string m_ip;
 	string m_serverIP = "";

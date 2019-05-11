@@ -9,7 +9,7 @@
 
 Servo::Servo() {
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-	isSet = false;
+	move(0);
 }
 
 Servo::~Servo() {
@@ -17,13 +17,8 @@ Servo::~Servo() {
 }
 
 void Servo::move(int angle) {
-//	if (!isSet) {
-//		isSet = true;
-		double value = 0.5;
-		uint8_t duty = 35 + (angle * value);
-		htim4.Instance->CCR1 = duty;
-		HAL_Delay(300);
-//
-//	}
+	double value = 0.5;
+	uint8_t duty = 35 + (angle * value);
+	htim4.Instance->CCR1 = duty;
 }
 

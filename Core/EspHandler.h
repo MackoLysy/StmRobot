@@ -9,7 +9,7 @@
 #define ESPHANDLER_H_
 
 #include "../Inc/usart.h"
-
+#include "utils.h"
 #include <string>
 #include <cstring>
 
@@ -29,7 +29,6 @@ public:
 private:
 	void sendCmd(string data);
 	void sendData(string data);
-	void bigDelay(uint32_t milliseconds);
 };
 
 #endif /* ESPHANDLER_H_ */

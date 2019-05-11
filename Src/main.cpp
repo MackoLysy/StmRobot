@@ -47,8 +47,8 @@
 #include "spi.h"
 #include "../Core/DataHandler.h"
 #include "../Core/Servo.h"
-#include "../Libs/ssd1306.h"
-#include "../Libs/ssd1306_tests.h"
+#include "../Core/Sonar.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -116,62 +116,31 @@ int main(void) {
 	MX_DMA_Init();
 	MX_USART2_UART_Init();
 	MX_TIM4_Init();
+	MX_TIM1_Init();
 	MX_SPI1_Init();
 	/* USER CODE BEGIN 2 */
 	DataHandler *instance = DataHandler::getInstace();
 	instance->resetEsp();
-	HAL_Delay(7000);
+	HAL_Delay(10000);
 	instance->espStart();
 	instance->testEsp();
 	instance->getIp();
 	instance->getIpInfo();
 	instance->createUDPServer();
-//	ssd1306_TestAll();
-//	ssd1306_Init();
-//
-//	ssd1306_SetCursor(2,30);
-//	ssd1306_WriteString("KUTAS", Font_11x18, White);
-//	ssd1306_UpdateScreen();
 	/* USER CODE END 2 */
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	Servo servo;
-//	int pos = 10;
+//	Sonar sonar;
 	while (1) {
-		/* USER CODE END WHILE */
-//		htim4.Instance->CCR1 = 180;
-//		servo.move(pos);
-//		servo.reset();
-//		pos = pos + 1;
-//		if (pos == 180) {
-//			pos = 0;
-//		}
-//		HAL_Delay(1000);
-		htim4.Instance->CCR1 = 35;
-		HAL_Delay(1000);
-		htim4.Instance->CCR1 = 80;
-		HAL_Delay(1000);
-//		htim4.Instance->CCR1 = 180;
-//		HAL_Delay(2500);
-//		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_13);
-//		htim4.Instance->CCR1 = 180;
-//		HAL_Delay(1000);
-//		servo.move(180);
-//		position = position + 10;
-//		if(position == 180)
+//		if(__HAL_TIM_GET_COUNTER(&htim1) == 10)
 //		{
-//			position = 0;
+////			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
+//			__HAL_TIM_SET_COUNTER(&htim1, 0);
 //		}
-
-//		position = position + 1;
-//		HAL_Delay(25);
-//		if (position > 150) {
-//			position = 24;
-//			htim4.Instance->CCR1 = position;
-//			HAL_Delay(200);
-//		}
+		HAL_Delay(100);
 //		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-//		HAL_Delay(500);
+		/* USER CODE END WHILE */
 		/* USER CODE BEGIN 3 */
 	}
 	/* USER CODE END 3 */
@@ -181,33 +150,34 @@ int main(void) {
  * @brief System Clock Configuration
  * @retval None
  */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+void SystemClock_Config(void) {
+	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
 
-  /**Initializes the CPU, AHB and APB busses clocks
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Initializes the CPU, AHB and APB busses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSE;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	/**Initializes the CPU, AHB and APB busses clocks
+	 */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+		Error_Handler();
+	}
+	/**Initializes the CPU, AHB and APB busses clocks
+	 */
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+		Error_Handler();
+	}
 }
 
 /* USER CODE BEGIN 4 */

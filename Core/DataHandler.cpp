@@ -84,7 +84,8 @@ void DataHandler::handleReciveData(const char* data) {
 	split(data, ":", tempData);
 	if (tempData.size() > 1) {
 		setServerIp(tempData.at(0));
-		sendData("Dupa!");
+		string data = m_cmdHandler.handleCmd(tempData.at(1));
+		sendData(data);
 	}
 
 }
@@ -197,6 +198,4 @@ void DataHandler::getValueFromRecivedData(const char* recivedData,
 void DataHandler::delay() {
 	HAL_Delay(500);
 }
-
-
 

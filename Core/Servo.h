@@ -14,11 +14,8 @@ public:
 	Servo();
 	virtual ~Servo();
 	void move(int angle);
-	void reset() {
-		isSet = false;
-	}
 private:
-	bool isSet;
+
 };
 
 #endif /* SERVO_H_ */

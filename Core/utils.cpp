@@ -35,3 +35,25 @@ void split(std::string str, std::string splitBy, std::vector<std::string>& token
         tokens.push_back(frag.substr(splitAt+splitLen, frag.size()-(splitAt+splitLen)));
     }
 }
+
+void bigDelay(uint32_t milliseconds) {
+	(void) SysTick->CTRL;
+	while (milliseconds != 0) {
+		milliseconds -= (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)
+				>> SysTick_CTRL_COUNTFLAG_Pos;
+
+	}
+
+}
+
+void reverse(char *str, int len)
+{
+    int i=0, j=len-1, temp;
+    while (i<j)
+    {
+        temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++; j--;
+    }
+}

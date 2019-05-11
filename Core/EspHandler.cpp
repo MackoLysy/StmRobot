@@ -56,7 +56,7 @@ void EspHandler::clear() {
 }
 
 void EspHandler::setUDPServer(string& ip) {
-	string cmd = "AT+CIPSTART=\"UDP\",\"" + ip + "\"," + PORT + "," + PORT
+	string cmd = "AT+CIPSTART=\"UDP\",\"" + ip + "\"," + M_PORT + "," + M_PORT
 			+ ",2";
 	sendCmd(cmd);
 }
@@ -92,12 +92,4 @@ void EspHandler::sendUDPData(string& data, string& ip, string& port) {
 	sendData(data);
 }
 
-void EspHandler::bigDelay(uint32_t milliseconds) {
-	(void) SysTick->CTRL;
-	while (milliseconds != 0) {
-		milliseconds -= (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)
-				>> SysTick_CTRL_COUNTFLAG_Pos;
 
-	}
-
-}
